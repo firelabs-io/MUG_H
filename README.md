@@ -1,0 +1,16 @@
+# Mug
+An Gui libary and wrapper based on SDL2
+# Strength
+- build in datatypes (Mug_Point, Mug_Line)
+- always evolving in competent ways
+- a big future ahead (Text builtin, shaders)
+# Is Mug compatible with opengl?
+we are planning to make it compatible opengl, as right now its not that compatible but can work via sdl2 itself
+at this point you better use sdl2 and not mug
+# what feactures upcoming?
+(in order)
+- multiple line support (e.g 4 lines connected)
+- text support
+- click support
+- touch area support
+- hide flag
