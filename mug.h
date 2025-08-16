@@ -27,7 +27,7 @@ typedef struct{ // TODO: Implement Text Rendering
     char c;
     int size[2]; // w h
     int pos[2]; // x y
-} Letter;
+} Mug_Letter;
 
 void EndNo(int ret);
 void EndWin(SDL_Window* win);
@@ -44,5 +44,8 @@ void DrawPoint(SDL_Renderer *ren, Mug_Point p);
 void DrawLineMan(SDL_Renderer* ren, int x1, int x2, int y1, int y2, int r, int g, int b);
 void DrawLine(SDL_Renderer* ren, Mug_Line m);
 void Release(SDL_Renderer* ren);
+//Mug_Letter MakeLetter(char c, int x, int y, int w, int h);
+//void AddCHLetter(Mug_Letter l);
+//void FlushLetter(Mug_Letter l);
 
 #endif
