@@ -16,6 +16,16 @@ Mug_Point MakePoint(int x, int y,/*int t*/ int r, int g, int b){
     return p;
 }
 
+Mug_Rect MakeRect(int x1, int x2, int x3, int x4, int y1, int y2, int y3, int y4, int r, int g, int b){
+    Mug_Rect s;
+    s.x[0] = x1; s.y[0] = y1;
+    s.x[1] = x2; s.y[1] = y2;
+    s.x[2] = x3; s.y[2] = y3;
+    s.x[3] = x4; s.y[3] = y4;
+    s.color[0] = r; s.color[1] = g; s.color[2] = b;
+    return s;
+}
+
 Mug_Trig MakeTringle(int x1, int x2, int x3, int y1, int y2, int y3, int r, int g, int b){
     Mug_Trig t;
     t.x[0] = x1; t.y[0] = y1;
@@ -46,6 +56,14 @@ SDL_Renderer* NewRen(SDL_Window* w){
 void SetBack(SDL_Renderer* ren, int r, int g, int b){
     SDL_SetRenderDrawColor(ren, r, g, b, 0);
     SDL_RenderClear(ren);
+}
+
+void DrawRect(SDL_Renderer *ren, Mug_Rect s){
+    SDL_SetRenderDrawColor(ren, s.color[0], s.color[1], s.color[2], 255);
+    SDL_RenderDrawLine(ren, s.x[0], s.y[0], s.x[1], s.y[1]);
+    SDL_RenderDrawLine(ren, s.x[1], s.y[1], s.x[2], s.y[2]);
+    SDL_RenderDrawLine(ren, s.x[2], s.y[2], s.x[3], s.y[3]);
+    SDL_RenderDrawLine(ren, s.x[3], s.y[3], s.x[0], s.y[0]);
 }
 
 void DrawTringle(SDL_Renderer *ren, Mug_Trig t){

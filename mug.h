@@ -23,10 +23,9 @@ typedef struct {
 } Mug_Trig;
 
 typedef struct {
-    int pos[2]; // x y
-    int size[2]; // w h
+    int x[4]; // x1 x2 x3 x4
+    int y[4]; // y1 y2 y3 y4
     int color[3]; 
-    int IsEmpty;
 } Mug_Rect;
 
 typedef struct{ // TODO: Implement Text Rendering
@@ -43,6 +42,7 @@ void EndwRen(SDL_Window* win, SDL_Renderer* ren);
 SDL_Window* NewWin(const char* title, int x, int y, int h, int w);
 SDL_Renderer* NewRen(SDL_Window* w);
 void SetBack(SDL_Renderer* ren, int r, int g, int b);
+Mug_Rect MakeRect(int x1, int x2, int x3, int x4, int y1, int y2, int y3, int y4, int r, int g, int b);
 Mug_Trig MakeTringle(int x1, int x2, int x3, int y1, int y2, int y3, int r, int g, int b);
 Mug_Line MakeLine(int x1, int x2, int y1, int y2, int r, int g, int b);
 Mug_Point MakePoint(int x, int y, int r, int g, int b);
@@ -51,6 +51,7 @@ void DrawPoint(SDL_Renderer *ren, Mug_Point p);
 void DrawLineMan(SDL_Renderer* ren, int x1, int x2, int y1, int y2, int r, int g, int b);
 void DrawLine(SDL_Renderer* ren, Mug_Line m);
 void DrawTringle(SDL_Renderer *ren, Mug_Trig t);
+void DrawRect(SDL_Renderer *ren, Mug_Rect s);
 void DrawLineMul(SDL_Renderer* ren, Mug_Line* ms, int count);
 void Release(SDL_Renderer* ren);
 Mug_Letter MakeLetter(char c, int x, int y, int w, int h);
