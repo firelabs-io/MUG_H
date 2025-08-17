@@ -88,13 +88,14 @@ Mug_Area MakeArea(Mug_Type type, int coords[], int color[3]){
 
     return a;
 }
-Mug_TouchArea MakeTouch(Mug_Area a, Mug_Type t, void (*func)(Mug_Area arg)){
+Mug_TouchArea MakeTouch(Mug_Area* a, Mug_Type t, void (*func)(Mug_Area* arg)) {
     Mug_TouchArea ta;
     ta.area = a;
     ta.type = t;
     ta.func = func;
     return ta;
 }
+
 
 SDL_Renderer* NewRen(SDL_Window* w){
     SDL_Renderer* ren = SDL_CreateRenderer(w, -1, 0);
@@ -107,6 +108,7 @@ void SetBack(SDL_Renderer* ren, int r, int g, int b){
 }
 
 void DrawRect(SDL_Renderer *ren, Mug_Rect s){
+    if (s.flag == 1){return;}
     SDL_SetRenderDrawColor(ren, s.color[0], s.color[1], s.color[2], 255);
     SDL_RenderDrawLine(ren, s.x[0], s.y[0], s.x[1], s.y[1]);
     SDL_RenderDrawLine(ren, s.x[1], s.y[1], s.x[2], s.y[2]);
@@ -115,6 +117,7 @@ void DrawRect(SDL_Renderer *ren, Mug_Rect s){
 }
 
 void DrawTringle(SDL_Renderer *ren, Mug_Trig t){
+    if (t.flag == 1){return;}
     SDL_SetRenderDrawColor(ren, t.color[0], t.color[1], t.color[2], 255);
     SDL_RenderDrawLine(ren, t.x[0], t.y[0], t.x[1], t.y[1]);
     SDL_RenderDrawLine(ren, t.x[1], t.y[1], t.x[2], t.y[2]);
@@ -127,6 +130,7 @@ void DrawLineMan(SDL_Renderer* ren, int x1, int x2, int y1, int y2, int r, int g
 }
 
 void DrawLine(SDL_Renderer* ren, Mug_Line m){
+    if (m.flag == 1){return;}
     SDL_SetRenderDrawColor(ren, m.color[0], m.color[1], m.color[2], 255);
     SDL_RenderDrawLine(ren, m.x[0], m.y[0], m.x[1], m.y[1]);
 }
@@ -140,22 +144,24 @@ void DrawPointMan(SDL_Renderer *ren, int x, int y, int r, int g, int b){
     SDL_RenderDrawPoint(ren, x, y);
 }
 void DrawPoint(SDL_Renderer *ren, Mug_Point p){
+    if (p.flag == 1){return;}
     SDL_SetRenderDrawColor(ren, p.color[0], p.color[1], p.color[2], 255);
     SDL_RenderDrawPoint(ren, p.x[0], p.y[0]);
 }
-void HandleClick(Mug_TouchArea list[], int count, int click_x, int click_y){
-    for (int i = 0; i < count; i++){
+void DrawLetter(SDL_Renderer* ren, char c){
 
-        if (list[i].type == MUG_POINT){
-            if (list[i].area.point.x[0] == click_x &&
-                list[i].area.point.y[0] == click_y){
-                list[i].func(list[i].area);
+}
+void HandleClick(Mug_TouchArea list[], int count, int click_x, int click_y) {
+    for (int i = 0; i < count; i++) {
+        Mug_Area* a = list[i].area;
+
+        if (list[i].type == MUG_POINT) {
+            if (a->point.x[0] == click_x && a->point.y[0] == click_y) {
+                list[i].func(a);
             }
-
-        } else if (list[i].type == MUG_LINE){
-            int x1 = list[i].area.line.x[0], y1 = list[i].area.line.y[0];
-            int x2 = list[i].area.line.x[1], y2 = list[i].area.line.y[1];
-
+        } else if (list[i].type == MUG_LINE) {
+            int x1 = a->line.x[0], y1 = a->line.y[0];
+            int x2 = a->line.x[1], y2 = a->line.y[1];
             int minX = x1 < x2 ? x1 : x2;
             int maxX = x1 > x2 ? x1 : x2;
             int minY = y1 < y2 ? y1 : y2;
@@ -163,46 +169,51 @@ void HandleClick(Mug_TouchArea list[], int count, int click_x, int click_y){
 
             if (click_x >= minX && click_x <= maxX &&
                 click_y >= minY && click_y <= maxY &&
-                (y2 - y1)*(click_x - x1) == (x2 - x1)*(click_y - y1)){
-                list[i].func(list[i].area);
+                (y2 - y1)*(click_x - x1) == (x2 - x1)*(click_y - y1)) {
+                list[i].func(a);
             }
-
-        } else if (list[i].type == MUG_TRIG){
-            int x0 = list[i].area.trig.x[0], y0 = list[i].area.trig.y[0];
-            int x1 = list[i].area.trig.x[1], y1 = list[i].area.trig.y[1];
-            int x2 = list[i].area.trig.x[2], y2 = list[i].area.trig.y[2];
-
+        } else if (list[i].type == MUG_TRIG) {
+            int x0 = a->trig.x[0], y0 = a->trig.y[0];
+            int x1 = a->trig.x[1], y1 = a->trig.y[1];
+            int x2 = a->trig.x[2], y2 = a->trig.y[2];
             int denom = (y1 - y2)*(x0 - x2) + (x2 - x1)*(y0 - y2);
-            int a = ((y1 - y2)*(click_x - x2) + (x2 - x1)*(click_y - y2));
-            int b = ((y2 - y0)*(click_x - x2) + (x0 - x2)*(click_y - y2));
-            int c = denom - a - b;
+            int A = (y1 - y2)*(click_x - x2) + (x2 - x1)*(click_y - y2);
+            int B = (y2 - y0)*(click_x - x2) + (x0 - x2)*(click_y - y2);
+            int C = denom - A - B;
 
-            if (denom != 0 && ((a >= 0 && b >= 0 && c >= 0) || (a <= 0 && b <= 0 && c <= 0))){
-                list[i].func(list[i].area);
+            if (denom != 0 && ((A >= 0 && B >= 0 && C >= 0) || (A <= 0 && B <= 0 && C <= 0))) {
+                list[i].func(a);
             }
-
-        } else if (list[i].type == MUG_RECT){
-            int minX = list[i].area.rect.x[0], maxX = list[i].area.rect.x[0];
-            int minY = list[i].area.rect.y[0], maxY = list[i].area.rect.y[0];
-
-            for (int j = 1; j < 4; j++){
-                if (list[i].area.rect.x[j] < minX) minX = list[i].area.rect.x[j];
-                if (list[i].area.rect.x[j] > maxX) maxX = list[i].area.rect.x[j];
-                if (list[i].area.rect.y[j] < minY) minY = list[i].area.rect.y[j];
-                if (list[i].area.rect.y[j] > maxY) maxY = list[i].area.rect.y[j];
+        } else if (list[i].type == MUG_RECT) {
+            int minX = a->rect.x[0], maxX = a->rect.x[0];
+            int minY = a->rect.y[0], maxY = a->rect.y[0];
+            for (int j = 1; j < 4; j++) {
+                if (a->rect.x[j] < minX) minX = a->rect.x[j];
+                if (a->rect.x[j] > maxX) maxX = a->rect.x[j];
+                if (a->rect.y[j] < minY) minY = a->rect.y[j];
+                if (a->rect.y[j] > maxY) maxY = a->rect.y[j];
             }
-
             if (click_x >= minX && click_x <= maxX &&
-                click_y >= minY && click_y <= maxY){
-                list[i].func(list[i].area);
+                click_y >= minY && click_y <= maxY) {
+                list[i].func(a);
             }
-
         } else {
-            EndNo(2); 
+            EndNo(2);
         }
     }
 }
 
+void Hide(Mug_Type t,  Mug_Area a){
+    if (t == MUG_POINT){
+        a.point.flag = 1;
+    } else if (t == MUG_LINE){
+        a.line.flag = 1;
+    } else if (t == MUG_TRIG){
+        a.trig.flag = 1;
+    } else if (t == MUG_RECT){
+        a.rect.flag = 1;
+    }
+}
 
 void Release(SDL_Renderer* ren){
     SDL_RenderPresent(ren);
