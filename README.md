@@ -9,8 +9,8 @@ we are planning to make it compatible opengl, as right now its not that compatib
 at this point you better use sdl2 and not mug
 # what feactures upcoming?
 (in order)
-- multiple line support (e.g 4 lines connected)
 - text support
-- click support
-- touch area support
-- hide flag
+- hide flag on Mug structs
+#How We handle new feactures?
+When we still delevoping the feacture, we make an program using that espefic feacture and fix any bug, its a good form of feedback
+another type of feedback is you, yes you, you can report issues, help on documentation and more!

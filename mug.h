@@ -4,8 +4,8 @@
 #include <stdlib.h>
 
 typedef struct {
-    int x;
-    int y;
+    int x[1];
+    int y[1];
     int color[3]; 
 } Mug_Point;
 
@@ -34,6 +34,24 @@ typedef struct{ // TODO: Implement Text Rendering
     int pos[2];  // x y
 } Mug_Letter;
 
+typedef enum {
+    MUG_POINT,
+    MUG_LINE,
+    MUG_TRIG,
+    MUG_RECT
+} Mug_Type;
+typedef union {
+    Mug_Point point;
+    Mug_Line line;
+    Mug_Trig trig;
+    Mug_Rect rect;
+} Mug_Area;
+typedef struct {
+    Mug_Area area;
+    Mug_Type type;
+    void (*func)(Mug_Area area); 
+} Mug_TouchArea;
+
 void EndNo(int ret);
 void EndWin(SDL_Window* win);
 void EndRen(SDL_Renderer* ren);
@@ -46,6 +64,9 @@ Mug_Rect MakeRect(int x1, int x2, int x3, int x4, int y1, int y2, int y3, int y4
 Mug_Trig MakeTringle(int x1, int x2, int x3, int y1, int y2, int y3, int r, int g, int b);
 Mug_Line MakeLine(int x1, int x2, int y1, int y2, int r, int g, int b);
 Mug_Point MakePoint(int x, int y, int r, int g, int b);
+Mug_Letter MakeLetter(char c, int x, int y, int w, int h);
+Mug_Area MakeArea(Mug_Type t, int cord[], int color[3]);
+Mug_TouchArea MakeTouch(Mug_Area a, Mug_Type t, void (*func)(Mug_Area arg));
 void DrawPointMan(SDL_Renderer *ren, int x, int y, int r, int g, int b);
 void DrawPoint(SDL_Renderer *ren, Mug_Point p);
 void DrawLineMan(SDL_Renderer* ren, int x1, int x2, int y1, int y2, int r, int g, int b);
@@ -53,8 +74,9 @@ void DrawLine(SDL_Renderer* ren, Mug_Line m);
 void DrawTringle(SDL_Renderer *ren, Mug_Trig t);
 void DrawRect(SDL_Renderer *ren, Mug_Rect s);
 void DrawLineMul(SDL_Renderer* ren, Mug_Line* ms, int count);
+void HandleClick(Mug_TouchArea list[], int count, int click_x, int click_y);
 void Release(SDL_Renderer* ren);
-Mug_Letter MakeLetter(char c, int x, int y, int w, int h);
+
 //void AddCHLetter(Mug_Letter l);
 //void FlushLetter(Mug_Letter l);
 
