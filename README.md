@@ -17,4 +17,6 @@ at this point you better use sdl2 and not mug
 
 # How We handle new feactures?
 When we still delevoping the feacture, we make an program using that espefic feacture and fix any bug, its a good form of feedback
+
+
 another type of feedback is you, yes you, you can report issues, help on documentation and more!
