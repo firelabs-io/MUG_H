@@ -16,6 +16,15 @@ Mug_Point MakePoint(int x, int y,/*int t*/ int r, int g, int b){
     return p;
 }
 
+Mug_Trig MakeTringle(int x1, int x2, int x3, int y1, int y2, int y3, int r, int g, int b){
+    Mug_Trig t;
+    t.x[0] = x1; t.y[0] = y1;
+    t.x[1] = x2; t.y[1] = y2;
+    t.x[2] = x3; t.y[2] = y3;
+    t.color[0] = r; t.color[1] = g; t.color[2] = b;
+    return t;
+}
+
 Mug_Line MakeLine(int x1, int y1, int x2, int y2, int r, int g, int b){
     Mug_Line l;
     l.x[0] = x1; l.y[0] = y1;
@@ -38,6 +47,14 @@ void SetBack(SDL_Renderer* ren, int r, int g, int b){
     SDL_SetRenderDrawColor(ren, r, g, b, 0);
     SDL_RenderClear(ren);
 }
+
+void DrawTringle(SDL_Renderer *ren, Mug_Trig t){
+    SDL_SetRenderDrawColor(ren, t.color[0], t.color[1], t.color[2], 255);
+    SDL_RenderDrawLine(ren, t.x[0], t.y[0], t.x[1], t.y[1]);
+    SDL_RenderDrawLine(ren, t.x[1], t.y[1], t.x[2], t.y[2]);
+    SDL_RenderDrawLine(ren, t.x[2], t.y[2], t.x[0], t.y[0]);
+}
+
 void DrawLineMan(SDL_Renderer* ren, int x1, int x2, int y1, int y2, int r, int g, int b){
     SDL_SetRenderDrawColor(ren, r, g, b, 0);
     SDL_RenderDrawLine(ren, x1, y1, x2, y2); 
@@ -47,7 +64,11 @@ void DrawLine(SDL_Renderer* ren, Mug_Line m){
     SDL_SetRenderDrawColor(ren, m.color[0], m.color[1], m.color[2], 255);
     SDL_RenderDrawLine(ren, m.x[0], m.y[0], m.x[1], m.y[1]);
 }
-
+void DrawLineMul(SDL_Renderer* ren, Mug_Line* ms, int count){
+    for (int i = 0; i < count; i++){
+        DrawLine(ren, ms[i]);
+    }
+}
 void DrawPointMan(SDL_Renderer *ren, int x, int y, int r, int g, int b){
     SDL_SetRenderDrawColor(ren, r, g, b, 0);
     SDL_RenderDrawPoint(ren, x, y);
@@ -59,4 +80,11 @@ void DrawPoint(SDL_Renderer *ren, Mug_Point p){
 
 void Release(SDL_Renderer* ren){
     SDL_RenderPresent(ren);
+}
+Mug_Letter MakeLetter(char c, int x, int y, int w, int h){
+    Mug_Letter letter;
+    letter.c = c;
+    letter.pos[0] = x; letter.pos[1] = y;
+    letter.size[0] = h; letter.size[1] = w;
+    return letter;
 }
