@@ -38,11 +38,20 @@ typedef struct{ // TODO: Implement Text Rendering
     int size[2]; // h w
     int pos[2];  // x y
     int flag;
-} Mug_Letter; // NOTE: this is not an mug_ch, just mapping and how should letter be!
+} Mug_Letter; // NOTE: this is not an mug_ch, just mapping and how should letter (render) be!
 typedef struct {
     Mug_Letter* list;
     int size;
 } Mug_Font;
+typedef struct { 
+    int pallettotal;
+    int **colorpallet;
+} Mug_Pallet;
+typedef struct { // NOTE: only works with bitmaps!
+    int flag;
+    int size[2]; // H W
+    int ***img; // bitmap, height, width, color
+} Mug_Imagedata;
 typedef enum {
     MUG_POINT,
     MUG_LINE,
@@ -89,8 +98,10 @@ void DrawLetter(SDL_Renderer* ren, char c);
 void HandleClick(Mug_TouchArea list[], int count, int click_x, int click_y);
 void Hide();
 void Release(SDL_Renderer* ren);
-
-
+Mug_Imagedata MakeImg(int h, int w, int flag);
+void LoadImg(Mug_Imagedata *img, int data[][img->size[1]][3]);
+void FreeImg(Mug_Imagedata *m);
+void RenderImg(SDL_Renderer* ren, Mug_Imagedata img, int x, int y);
 //void AddCHLetter(Mug_Letter l);
 //void FlushLetter(Mug_Letter l);
 

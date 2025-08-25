@@ -202,6 +202,59 @@ void HandleClick(Mug_TouchArea list[], int count, int click_x, int click_y) {
         }
     }
 }
+Mug_Imagedata MakeImg(int h, int w, int flag) {
+    Mug_Imagedata m;
+    m.size[0] = h;
+    m.size[1] = w;
+    if (flag != -1){
+        SDL_Log("test");
+    }
+    m.img = malloc(h * sizeof(int**));
+    for (int i = 0; i < h; i++) {
+        m.img[i] = malloc(w * sizeof(int*));
+        for (int j = 0; j < w; j++) {
+            m.img[i][j] = malloc(3 * sizeof(int)); // RGB
+        }
+    }
+
+    return m;
+}
+// Load flat RGB values into Mug_Imagedata
+// pixels is int[height][width][3] laid out flat (row-major)
+void LoadImg(Mug_Imagedata *img, int data[][img->size[1]][3]) {
+    int h = img->size[0];
+    int w = img->size[1];
+
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < w; j++) {
+            img->img[i][j][0] = data[i][j][0];
+            img->img[i][j][1] = data[i][j][1];
+            img->img[i][j][2] = data[i][j][2];
+        }
+    }
+}
+
+
+void FreeImg(Mug_Imagedata *m) {
+    int h = m->size[0];
+    int w = m->size[1];
+
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < w; j++) {
+            free(m->img[i][j]);
+        }
+        free(m->img[i]);
+    }
+    free(m->img);
+}
+void RenderImg(SDL_Renderer* ren, Mug_Imagedata img, int x, int y) {
+    for (int i = 0; i < img.size[0]; i++) {
+        for (int j = 0; j < img.size[1]; j++) {
+            DrawPointMan(ren, i + y, j + x, img.img[i][j][0], img.img[i][j][1], img.img[i][j][2]);
+        }
+    }
+}
+
 
 void Hide(Mug_Type t,  Mug_Area a){
     if (t == MUG_POINT){
