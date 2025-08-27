@@ -250,7 +250,7 @@ void FreeImg(Mug_Imagedata *m) {
 void RenderImg(SDL_Renderer* ren, Mug_Imagedata img, int x, int y) {
     for (int i = 0; i < img.size[0]; i++) {
         for (int j = 0; j < img.size[1]; j++) {
-            DrawPointMan(ren, i + y, j + x, img.img[i][j][0], img.img[i][j][1], img.img[i][j][2]);
+            DrawPointMan(ren, j + x, i+y, img.img[i][j][0], img.img[i][j][1], img.img[i][j][2]);
         }
     }
 }

@@ -69,7 +69,6 @@ typedef struct {
     Mug_Type type;
     void (*func)(Mug_Area* area); 
 } Mug_TouchArea;
-//extern Mug_Font current_font;
 
 void EndNo(int ret);
 void EndWin(SDL_Window* win);
@@ -102,7 +101,6 @@ Mug_Imagedata MakeImg(int h, int w, int flag);
 void LoadImg(Mug_Imagedata *img, int data[][img->size[1]][3]);
 void FreeImg(Mug_Imagedata *m);
 void RenderImg(SDL_Renderer* ren, Mug_Imagedata img, int x, int y);
-//void AddCHLetter(Mug_Letter l);
-//void FlushLetter(Mug_Letter l);
+
 
 #endif
