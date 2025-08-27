@@ -11,6 +11,7 @@ void Test(SDL_Renderer *ren, Mug_Imagedata* img,char* msg, int x, int y){
     int char_U[5][5][3] = {{{0,0,0},{t,t,t},{0,0,0},{t,t,t},{0,0,0}},{{0,0,0},{t,t,t},{0,0,0},{t,t,t},{0,0,0}},{{0,0,0},{t,t,t},{0,0,0},{t,t,t},{0,0,0}},{{0,0,0},{t,t,t},{0,0,0},{t,t,t},{0,0,0}},{{0,0,0},{t,t,t},{t,t,t},{t,t,t},{0,0,0}},};
     int char_G[5][5][3] = {{{0,0,0},{t,t,t},{t,t,t},{t,t,t},{t,t,t}},{{0,0,0},{t,t,t},{0,0,0},{0,0,0},{0,0,0}},{{0,0,0},{t,t,t},{0,0,0},{t,t,t},{t,t,t}},{{0,0,0},{t,t,t},{0,0,0},{0,0,0},{t,t,t}},{{0,0,0},{t,t,t},{t,t,t},{t,t,t},{t,t,t}},};
     int char_MUG[5][5][3] = {{{t,t,t},{0,0,0},{t,t,t},{0,0,0},{0,0,0}},{{t,t,t},{0,0,0},{t,t,t},{t,t,t},{t,t,t}},{{t,t,t},{0,0,0},{t,t,t},{0,0,0},{t,t,t}},{{t,t,t},{0,0,0},{t,t,t},{t,t,t},{t,t,t}},{{t,t,t},{t,t,t},{t,t,t},{0,0,0},{0,0,0}},};
+    int char_EX[5][5][3] = {{{0,0,0},{0,0,0},{t,t,t},{0,0,0},{0,0,0}},{{0,0,0},{0,0,0},{t,t,t},{0,0,0},{0,0,0}},{{0,0,0},{0,0,0},{t,t,t},{0,0,0},{0,0,0}},{{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0}},{{0,0,0},{0,0,0},{t,t,t},{0,0,0},{0,0,0}},};
     for (int i = 0; i < strlen(msg); i++){
         if (msg[i] == 'A') {
             LoadImg(img, char_A);
@@ -26,6 +27,10 @@ void Test(SDL_Renderer *ren, Mug_Imagedata* img,char* msg, int x, int y){
             x += 5;
         }else if(msg[i] == 'G'){
             LoadImg(img, char_G);
+            RenderImg(ren, *img, x, y);
+            x += 5;
+        }else if(msg[i] == '!'){
+            LoadImg(img, char_EX);
             RenderImg(ren, *img, x, y);
             x += 5;
         }else if(msg[i] == 1){
